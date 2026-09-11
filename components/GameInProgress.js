@@ -31,15 +31,15 @@ export default function GameInProgress({
   const currentMovePlayer = playersActive[room.currentMove];
 
   const onYellOne = (player) => {
-    yellOne(player, roomId, playersActive, room);
+    yellOne(player, roomId, playersActive);
   };
 
   const onPassTurn = (player) => {
-    passTurn(player, roomId, room, playersActive);
+    passTurn(player, roomId, playersActive);
   };
 
   const onDrawCard = () => {
-    drawCard(room, playersActive, roomId);
+    drawCard(roomId, playersActive);
   };
 
   const onDiscardACard = (card, color) => {
@@ -47,7 +47,7 @@ export default function GameInProgress({
       setWildCard(card);
       return;
     }
-    discardACard(roomId, playersActive, card, color, room);
+    discardACard(roomId, playersActive, card, color);
     setWildCard(null);
   };
   return (

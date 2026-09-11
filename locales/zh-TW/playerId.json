@@ -1,0 +1,24 @@
+{
+  "loading": "載入中...",
+  "waiting-player": "等待玩家加入...",
+  "you": "（你）",
+  "link": "分享連結",
+  "players": "玩家",
+  "start": "開始",
+  "copied": "已複製！",
+  "copy-link": "點擊複製連結",
+  "yell-one": "喊出 UNO！的玩家：",
+  "wild-options": {
+    "red": "紅色",
+    "yellow": "黃色",
+    "green": "綠色",
+    "blue": "藍色"
+  },
+  "player-options": {
+    "pass": "跳過"
+  },
+  "winner-board": {
+    "winner": "獲勝者：",
+    "replay": "再玩一局"
+  }
+}
