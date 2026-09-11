@@ -30,7 +30,9 @@ service cloud.firestore {
 
         allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['cards'])
           && request.resource.data.cards is list
-          && request.resource.data.cards.size() <= 40;
+          // 108 is the total deck size, so no real hand can ever exceed
+          // it even after heavy draw-two/draw-four stacking.
+          && request.resource.data.cards.size() <= 108;
 
         allow delete: if false;
       }

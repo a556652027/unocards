@@ -17,7 +17,11 @@ export default function NewGame() {
     event.preventDefault();
 
     db.collection("rooms")
-      .add({ count: value, deckDict: {}, date: Timestamp.fromDate(new Date()) })
+      .add({
+        count: Number(value),
+        deckDict: {},
+        date: Timestamp.fromDate(new Date()),
+      })
       .then(
         (roomRef) => {
           roomRef
