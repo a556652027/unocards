@@ -1,55 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import db, { Timestamp } from "~/utils/firebase";
 import useTranslation from "next-translate/useTranslation";
 
 const MAX_MESSAGE_LENGTH = 300;
-const MESSAGE_HISTORY_LIMIT = 50;
 
 export default function Chat({ roomId, playerId, playerName }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-  const [unreadCount, setUnreadCount] = useState(0);
-  const messagesEndRef = useRef(null);
-  const isFirstSnapshot = useRef(true);
-
-  useEffect(() => {
-    if (!roomId) return;
-
-    const messagesRef = db
-      .collection("rooms")
-      .doc(roomId)
-      .collection("messages")
-      .orderBy("createdAt", "desc")
-      .limit(MESSAGE_HISTORY_LIMIT);
-
-    const unsubscribe = messagesRef.onSnapshot((snapshot) => {
-      const newMessages = [];
-      snapshot.forEach((doc) => newMessages.push({ id: doc.id, ...doc.data() }));
-      newMessages.reverse();
-      setMessages(newMessages);
-
-      if (isFirstSnapshot.current) {
-        isFirstSnapshot.current = false;
-        return;
-      }
-
-      const lastMessage = newMessages[newMessages.length - 1];
-      if (lastMessage && lastMessage.playerId !== playerId) {
-        setUnreadCount((count) => count + 1);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [roomId, playerId]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setUnreadCount(0);
-      messagesEndRef.current?.scrollIntoView({ block: "end" });
-    }
-  }, [isOpen, messages]);
 
   const onSend = (event) => {
     event.preventDefault();
@@ -64,9 +22,15 @@ export default function Chat({ roomId, playerId, playerName }) {
         playerName: playerName || "",
         text: trimmed.slice(0, MAX_MESSAGE_LENGTH),
         createdAt: Timestamp.now(),
+      })
+      .then((docRef) => {
+        setTimeout(() => {
+          docRef.delete().catch(() => {});
+        }, 6000);
       });
 
     setText("");
+    setIsOpen(false);
   };
 
   return (
@@ -79,94 +43,42 @@ export default function Chat({ roomId, playerId, playerName }) {
         style={{ top: "50%", right: "0px" }}
         aria-label="open chat"
       >
-        <span className="relative text-xl">
-          💬
-          {unreadCount > 0 && (
-            <span
-              className="absolute bg-yellow-400 text-black text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center"
-              style={{ top: "-0.5rem", right: "-0.75rem" }}
-            >
-              {unreadCount > 9 ? "9+" : unreadCount}
-            </span>
-          )}
-        </span>
+        <span className="text-xl">💬</span>
       </button>
 
       <div
-        className="fixed z-30 bg-white rounded-l-lg shadow-lg border border-gray-300 flex flex-col overflow-hidden"
+        className="fixed z-30 bg-white rounded-l-lg shadow-lg border border-gray-300 overflow-hidden"
         style={{
           top: "3rem",
-          width: "18rem",
-          maxWidth: "85vw",
-          height: "26rem",
-          maxHeight: "70vh",
-          right: isOpen ? "0px" : "-18rem",
+          width: "16rem",
+          maxWidth: "80vw",
+          right: isOpen ? "0px" : "-16rem",
           transition: "right 300ms ease-in-out",
         }}
       >
-        <div className="bg-gray-800 text-white px-3 py-2 flex items-center justify-between flex-shrink-0">
-          <span className="font-bold text-sm">{t("playerId:chat.title")}</span>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-white text-lg leading-none focus:outline-none"
-            aria-label="close chat"
-          >
-            &times;
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
-          {messages.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center mt-4">
-              {t("playerId:chat.empty")}
-            </p>
-          ) : (
-            messages.map((message) => {
-              const isMine = message.playerId === playerId;
-              return (
-                <div
-                  key={message.id}
-                  className={`flex flex-col ${
-                    isMine ? "items-end" : "items-start"
-                  }`}
-                >
-                  <span className="text-xs text-gray-500 px-1">
-                    {isMine ? t("playerId:chat.you") : message.playerName}
-                  </span>
-                  <span
-                    className={`px-3 py-1 rounded-lg text-sm break-words max-w-full ${
-                      isMine
-                        ? "bg-red-600 text-white"
-                        : "bg-gray-200 text-gray-800"
-                    }`}
-                  >
-                    {message.text}
-                  </span>
-                </div>
-              );
-            })
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        <form
-          onSubmit={onSend}
-          className="flex border-t border-gray-200 flex-shrink-0"
-        >
+        <form onSubmit={onSend} className="flex items-center">
           <input
             type="text"
             value={text}
             onChange={(event) => setText(event.target.value)}
             maxLength={MAX_MESSAGE_LENGTH}
             placeholder={t("playerId:chat.placeholder")}
-            className="flex-1 px-3 py-2 text-sm focus:outline-none"
+            className="flex-1 px-3 py-3 text-sm focus:outline-none"
           />
           <button
             type="submit"
-            className="px-3 py-2 text-red-600 font-bold text-sm focus:outline-none disabled:opacity-50"
+            className="px-3 py-3 text-red-600 font-bold text-sm focus:outline-none disabled:opacity-50 flex-shrink-0"
             disabled={!text.trim()}
           >
             {t("playerId:chat.send")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="px-2 text-gray-400 text-lg leading-none focus:outline-none flex-shrink-0"
+            aria-label="close chat"
+          >
+            &times;
           </button>
         </form>
       </div>

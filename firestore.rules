@@ -48,8 +48,10 @@ service cloud.firestore {
           && request.resource.data.text.size() > 0
           && request.resource.data.text.size() <= 300;
 
-        // Chat log is append-only: no editing or deleting messages.
-        allow update, delete: if false;
+        // Messages are now ephemeral floating bubbles (like reactions),
+        // not a persistent log, so the client auto-deletes its own.
+        allow update: if false;
+        allow delete: if true;
       }
 
       match /reactions/{reactionId} {

@@ -17,6 +17,7 @@ import {
 import useTranslation from "next-translate/useTranslation";
 import HeaderPlayer from "~/components/HeaderPlayer";
 import PlayerReactionBubble from "~/components/PlayerReactionBubble";
+import PlayerMessageBubble from "~/components/PlayerMessageBubble";
 
 export default function GameInProgress({
   room,
@@ -26,6 +27,7 @@ export default function GameInProgress({
   winner,
   onNewGame,
   reactionsByPlayer,
+  messagesByPlayer,
 }) {
   const { t } = useTranslation();
   const [wildCard, setWildCard] = useState(null);
@@ -60,6 +62,7 @@ export default function GameInProgress({
         renderPlayer={(player, isCurrentPlayer) => (
           <>
             <div className="relative">
+              <PlayerMessageBubble message={messagesByPlayer?.[player.id]} />
               <PlayerReactionBubble reaction={reactionsByPlayer?.[player.id]} />
               <HeaderPlayer color="white" type="h1" margin="0" marginBottom="1">
                 <span

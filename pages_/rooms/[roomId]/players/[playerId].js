@@ -7,7 +7,9 @@ import StartGame from "~/components/StartGame";
 import Chat from "~/components/Chat";
 import EmojiReactions from "~/components/EmojiReactions";
 import PlayerReactionBubble from "~/components/PlayerReactionBubble";
+import PlayerMessageBubble from "~/components/PlayerMessageBubble";
 import useReactions from "~/hooks/useReactions";
+import useChatBubbles from "~/hooks/useChatBubbles";
 import { takeACard, isWild, isWildDrawFour, isDrawTwo } from "~/utils/game";
 import Button from "~/components/Button";
 import Main from "~/components/Main";
@@ -26,6 +28,7 @@ export default function Game() {
   const currentPlayer = playersActive.find((player) => player.id === playerId);
   const playerName = currentPlayer ? currentPlayer.data().name : "";
   const reactionsByPlayer = useReactions(roomId);
+  const messagesByPlayer = useChatBubbles(roomId);
   // const link_jugadores = router.asPath;
 
   useEffect(() => {
@@ -117,6 +120,7 @@ export default function Game() {
           playerId={playerId}
           onNewGame={onNewGame}
           reactionsByPlayer={reactionsByPlayer}
+          messagesByPlayer={messagesByPlayer}
         />
         <Chat roomId={roomId} playerId={playerId} playerName={playerName} />
         <EmojiReactions
@@ -135,7 +139,12 @@ export default function Game() {
           <div className="flex">
             <div className="relative flex-auto">
               {player && (
-                <PlayerReactionBubble reaction={reactionsByPlayer?.[player.id]} />
+                <>
+                  <PlayerMessageBubble message={messagesByPlayer?.[player.id]} />
+                  <PlayerReactionBubble
+                    reaction={reactionsByPlayer?.[player.id]}
+                  />
+                </>
               )}
               {player ? player.data().name : t("playerId:waiting-player")}
               {player && player.id === playerId ? t("playerId:you") : null}
