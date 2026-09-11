@@ -32,14 +32,14 @@ function ReactionBubble({ reaction, onExpire }) {
         visible ? "opacity-100 scale-100 -translate-y-1" : "opacity-0 scale-75"
       }`}
     >
-      <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-lg bg-white">
+      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-lg bg-white">
         <img
           src={`/img/${reaction.emoji}`}
           alt=""
           className="w-full h-full object-cover"
         />
       </div>
-      <span className="mt-1 text-xs text-white bg-black bg-opacity-60 px-2 rounded-full truncate max-w-[84px]">
+      <span className="mt-1 text-[10px] leading-tight text-white bg-black bg-opacity-60 px-1.5 rounded-full truncate max-w-[64px]">
         {reaction.playerName}
       </span>
     </div>
@@ -125,7 +125,7 @@ export default function EmojiReactions({ roomId, playerId, playerName }) {
                 key={emoji}
                 type="button"
                 onClick={() => onThrow(emoji)}
-                className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 hover:border-red-500 focus:outline-none flex-shrink-0"
+                className="w-8 h-8 rounded-full overflow-hidden border border-gray-200 hover:border-red-500 focus:outline-none flex-shrink-0"
               >
                 <img
                   src={`/img/${emoji}`}
