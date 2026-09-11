@@ -34,6 +34,57 @@ service cloud.firestore {
 
         allow delete: if false;
       }
+
+      match /messages/{messageId} {
+        allow read: if true;
+
+        allow create: if request.resource.data.keys().hasOnly(['playerId', 'playerName', 'text', 'createdAt'])
+          && request.resource.data.playerId is string
+          && request.resource.data.playerName is string
+          && request.resource.data.playerName.size() <= 40
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 300;
+
+        // Chat log is append-only: no editing or deleting messages.
+        allow update, delete: if false;
+      }
+
+      match /reactions/{reactionId} {
+        allow read: if true;
+
+        allow create: if request.resource.data.keys().hasOnly(['playerId', 'playerName', 'emoji', 'createdAt'])
+          && request.resource.data.playerId is string
+          && request.resource.data.playerName is string
+          && request.resource.data.playerName.size() <= 40
+          && request.resource.data.emoji in [
+            '708468294_963942662937847_574918018398996561_n.jpg',
+            '708876812_1009461211474006_6493851154973014907_n.jpg',
+            '736163351_2953399644992384_4942549377832643833_n.jpg',
+            '739615726_1012880928222794_179860455469566494_n.jpg',
+            '754587272_831751739906103_5813082551754218599_n.jpg',
+            '773735398_2006597240024892_7263014449617398276_n.jpg',
+            '789423671_1417065207014638_2638604526438631015_n.jpg',
+            '800448736_1457364952917450_516448442526523002_n.jpg',
+            '800448737_1739240497351101_5536966973980230790_n.jpg',
+            '800538487_918983500860456_1841950731862025414_n.jpg',
+            '800755287_4433121276962657_5521281399810326459_n.jpg',
+            '800945107_1100671689167886_3430091882028567965_n.jpg',
+            '801008343_1606426947682211_2734848183268995078_n.jpg',
+            '801127660_1957338095224471_1969043609100088711_n.jpg',
+            '801127665_922124683854765_3952448543487888624_n.jpg',
+            '801394799_1370127575286570_8811567507575649557_n.jpg',
+            '801880885_2107014556573197_4960954084913590252_n.jpg',
+            '802021796_2084771995500315_6526406311987230592_n.jpg',
+            '803924404_1023760653999446_5322413275038239917_n.jpg',
+            '804024030_5088785588015584_8175921329883768579_n.jpg'
+          ];
+
+        // Reactions are ephemeral (client auto-deletes its own after a
+        // few seconds), so no update needed, and delete is left open.
+        allow update: if false;
+        allow delete: if true;
+      }
     }
 
     // Deny everything outside of rooms/players, in case this Firebase

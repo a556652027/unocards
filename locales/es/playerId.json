@@ -20,5 +20,12 @@
   "winner-board": {
     "winner": "Ganó el jugador: ",
     "replay": "Jugar de nuevo"
+  },
+  "chat": {
+    "title": "Chat",
+    "placeholder": "Escribe un mensaje...",
+    "send": "Enviar",
+    "you": "Vos",
+    "empty": "Todavía no hay mensajes"
   }
 }

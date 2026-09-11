@@ -20,5 +20,12 @@
   "winner-board": {
     "winner": "The winner is: ",
     "replay": "Replay"
+  },
+  "chat": {
+    "title": "Chat",
+    "placeholder": "Type a message...",
+    "send": "Send",
+    "you": "You",
+    "empty": "No messages yet"
   }
 }

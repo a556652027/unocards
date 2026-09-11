@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import db from "~/utils/firebase";
 import StartGame from "~/components/StartGame";
+import Chat from "~/components/Chat";
+import EmojiReactions from "~/components/EmojiReactions";
 import { takeACard, isWild, isWildDrawFour, isDrawTwo } from "~/utils/game";
 import Button from "~/components/Button";
 import Main from "~/components/Main";
@@ -19,6 +21,8 @@ export default function Game() {
   const router = useRouter();
   const roomId = router.query.roomId;
   const playerId = router.query.playerId;
+  const currentPlayer = playersActive.find((player) => player.id === playerId);
+  const playerName = currentPlayer ? currentPlayer.data().name : "";
   // const link_jugadores = router.asPath;
 
   useEffect(() => {
@@ -110,6 +114,12 @@ export default function Game() {
           playerId={playerId}
           onNewGame={onNewGame}
         />
+        <Chat roomId={roomId} playerId={playerId} playerName={playerName} />
+        <EmojiReactions
+          roomId={roomId}
+          playerId={playerId}
+          playerName={playerName}
+        />
       </Main>
     );
   } else {
@@ -177,6 +187,12 @@ export default function Game() {
           </div>
         </div>
         <Footer />
+        <Chat roomId={roomId} playerId={playerId} playerName={playerName} />
+        <EmojiReactions
+          roomId={roomId}
+          playerId={playerId}
+          playerName={playerName}
+        />
       </Main>
     );
   }

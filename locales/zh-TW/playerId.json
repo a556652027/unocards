@@ -20,5 +20,12 @@
   "winner-board": {
     "winner": "獲勝者：",
     "replay": "再玩一局"
+  },
+  "chat": {
+    "title": "聊天室",
+    "placeholder": "輸入訊息...",
+    "send": "傳送",
+    "you": "你",
+    "empty": "還沒有人說話"
   }
 }
