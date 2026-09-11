@@ -93,13 +93,13 @@ export default function Chat({ roomId, playerId, playerName }) {
       </button>
 
       <div
-        className="fixed z-30 -translate-y-1/2 bg-white rounded-l-lg shadow-lg border border-gray-300 flex flex-col overflow-hidden"
+        className="fixed z-30 bg-white rounded-l-lg shadow-lg border border-gray-300 flex flex-col overflow-hidden"
         style={{
-          top: "50%",
+          top: "3rem",
           width: "18rem",
           maxWidth: "85vw",
-          height: "70vh",
-          maxHeight: "520px",
+          height: "26rem",
+          maxHeight: "70vh",
           right: isOpen ? "0px" : "-18rem",
           transition: "right 300ms ease-in-out",
         }}
