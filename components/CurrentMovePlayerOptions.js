@@ -22,16 +22,22 @@ export default function CurrentMovePlayerOptiones({
     >
       <button
         onClick={() => onPassTurn(room.currentMove)}
-        className={`text-2xl md:text-xl flex-initial text-white font-bold py-1 md:py-2 px-4 rounded bg-${
-          room.drawPile == false ? "gray-500" : "green-700"
-        } hover:bg-${room.drawPile == false ? "gray-500" : "green"}-500 mr-2`}
+        className={`text-2xl md:text-xl flex-initial text-white font-bold py-1 md:py-2 px-4 rounded-lg shadow-md transform transition duration-150 bg-${
+          room.drawPile == false ? "gray-400" : "green-600"
+        } hover:bg-${
+          room.drawPile == false ? "gray-400" : "green-500"
+        } mr-2 ${
+          room.drawPile == false
+            ? "cursor-not-allowed opacity-75"
+            : "hover:-translate-y-1 hover:shadow-lg active:translate-y-0"
+        }`}
         disabled={room.drawPile == false ? true : false}
       >
         {t("playerId:player-options.pass")}
       </button>
       <button
         onClick={() => onYellOne(room.currentMove)}
-        className={`text-2xl md:text-xl bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 md:p-2 rounded ml-2 ${
+        className={`text-2xl md:text-xl bg-red-600 hover:bg-red-500 text-white font-bold py-1 px-4 md:p-2 rounded-lg shadow-md ml-2 transform transition duration-150 hover:-translate-y-1 hover:shadow-lg active:translate-y-0 ${
           shouldYell ? "uno-glow" : ""
         }`}
       >

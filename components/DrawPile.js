@@ -11,6 +11,11 @@ export default function DrawPile({
       onClick={(e) => onDrawCard()}
       disabled={!(canDrawFromPile && isCurrentPlayerTurn)}
       style={{ marginRight: "1em" }}
+      className={`transform transition-transform duration-200 ease-out ${
+        canDrawFromPile && isCurrentPlayerTurn
+          ? "hover:-translate-y-2 hover:scale-105 active:translate-y-0 active:scale-100"
+          : "cursor-not-allowed opacity-75"
+      }`}
     >
       <div
         style={{

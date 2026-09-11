@@ -31,15 +31,16 @@ export default function EmojiReactions({ roomId, playerId, playerName }) {
     >
       {isOpen && (
         <div
-          className="mb-2 overflow-y-auto bg-white rounded shadow-lg border border-gray-300 p-2 grid grid-cols-4 gap-2"
-          style={{ width: "15rem", maxWidth: "80vw", maxHeight: "18rem" }}
+          className="mb-2 overflow-y-auto bg-white rounded-lg shadow-2xl border border-gray-200 p-3 grid grid-cols-3 gap-3"
+          style={{ width: "17rem", maxWidth: "85vw", maxHeight: "24rem" }}
         >
           {emojis.map((emoji) => (
             <button
               key={emoji}
               type="button"
               onClick={() => onThrow(emoji)}
-              className="w-8 h-8 rounded-full overflow-hidden border border-gray-200 hover:border-red-500 focus:outline-none flex-shrink-0"
+              className="rounded-full overflow-hidden border-2 border-gray-200 hover:border-red-500 hover:scale-110 transform transition duration-150 focus:outline-none flex-shrink-0"
+              style={{ width: "4rem", height: "4rem" }}
             >
               <img
                 src={`/img/${emoji}`}

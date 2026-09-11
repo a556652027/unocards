@@ -10,6 +10,7 @@ import PlayerReactionBubble from "~/components/PlayerReactionBubble";
 import PlayerMessageBubble from "~/components/PlayerMessageBubble";
 import useReactions from "~/hooks/useReactions";
 import useChatBubbles from "~/hooks/useChatBubbles";
+import useGameSounds from "~/hooks/useGameSounds";
 import { takeACard, isWild, isWildDrawFour, isDrawTwo } from "~/utils/game";
 import Button from "~/components/Button";
 import Main from "~/components/Main";
@@ -29,6 +30,7 @@ export default function Game() {
   const playerName = currentPlayer ? currentPlayer.data().name : "";
   const reactionsByPlayer = useReactions(roomId);
   const messagesByPlayer = useChatBubbles(roomId);
+  useGameSounds(room);
   // const link_jugadores = router.asPath;
 
   useEffect(() => {
@@ -135,22 +137,35 @@ export default function Game() {
     for (let i = 0; i < room.count; i++) {
       const player = playersActive[i];
       playersSlots.push(
-        <li className="py-2 text-gray-700" key={i}>
-          <div className="flex">
-            <div className="relative flex-auto">
-              {player && (
-                <>
-                  <PlayerMessageBubble message={messagesByPlayer?.[player.id]} />
-                  <PlayerReactionBubble
-                    reaction={reactionsByPlayer?.[player.id]}
-                  />
-                </>
-              )}
-              {player ? player.data().name : t("playerId:waiting-player")}
-              {player && player.id === playerId ? t("playerId:you") : null}
-            </div>
-            {player ? <span>✅</span> : null}
+        <li
+          className={`flex items-center justify-between py-3 px-3 rounded-lg mb-2 ${
+            player ? "bg-green-50" : "bg-gray-50"
+          }`}
+          key={i}
+        >
+          <div className="relative flex-auto font-medium text-gray-700">
+            {player && (
+              <>
+                <PlayerMessageBubble
+                  message={messagesByPlayer?.[player.id]}
+                  position="side"
+                />
+                <PlayerReactionBubble
+                  reaction={reactionsByPlayer?.[player.id]}
+                  position="side"
+                />
+              </>
+            )}
+            {player ? player.data().name : t("playerId:waiting-player")}
+            {player && player.id === playerId ? (
+              <span className="text-gray-400"> {t("playerId:you")}</span>
+            ) : null}
           </div>
+          {player ? (
+            <span className="text-green-600 text-xl">✅</span>
+          ) : (
+            <span className="text-gray-300 text-xl">⏳</span>
+          )}
         </li>
       );
     }
@@ -158,28 +173,39 @@ export default function Game() {
     return (
       <Main color="gray">
         <Layout />
-        <div className="flex-auto px-4 py-8 px-4 py-8 mx-auto w-full">
+        <div className="flex-auto px-4 py-8 mx-auto w-full">
           <div className="flex items-center justify-center">
             <div className="w-full max-w-lg ">
-              <div className="bg-white p-4 rounded shadow">
-                <div className="my-4">
-                  <p className="text-gray-700 font-bold">
+              <div className="bg-white p-6 rounded-lg shadow-2xl">
+                <div className="mb-6">
+                  <p className="text-gray-700 font-bold mb-2">
                     {t("playerId:link")}
                   </p>
                   <input
-                    className="w-full text-gray-700 border-2 border-gray-300 h-12 mt-1 p-2 rounded g-gray-200 my-4"
+                    className="w-full text-gray-700 bg-gray-100 border-2 border-gray-200 h-12 p-2 rounded-lg mb-2"
                     readOnly
                     value={`${getBaseUrl()}/rooms/${roomId}`}
                   ></input>
                   <RoomLinkButton link={`${getBaseUrl()}/rooms/${roomId}`} />
                 </div>
-                <div className="my-4">
-                  <p className="text-gray-700 font-bold">
+                <div className="mb-6">
+                  <p className="text-gray-700 font-bold mb-2">
+                    {t("playerId:watch-link")}
+                  </p>
+                  <input
+                    className="w-full text-gray-700 bg-gray-100 border-2 border-gray-200 h-12 p-2 rounded-lg mb-2"
+                    readOnly
+                    value={`${getBaseUrl()}/rooms/${roomId}/watch`}
+                  ></input>
+                  <RoomLinkButton
+                    link={`${getBaseUrl()}/rooms/${roomId}/watch`}
+                  />
+                </div>
+                <div className="mb-6">
+                  <p className="text-gray-700 font-bold mb-2">
                     {t("playerId:players")}
                   </p>
-                  <ol className="divide-y divide-gray-400 list-decimal pl-5">
-                    {playersSlots}
-                  </ol>
+                  <ol className="pl-0">{playersSlots}</ol>
                 </div>
                 {playersActive.map((player) => {
                   const isAdmin =

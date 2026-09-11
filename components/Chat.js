@@ -37,7 +37,7 @@ export default function Chat({ roomId, playerId, playerName }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed z-30 -translate-y-1/2 bg-red-700 hover:bg-red-800 text-white rounded-l-lg shadow-lg px-2 py-3 flex flex-col items-center gap-1 transition-opacity duration-200 ${
+        className={`fixed z-30 transform -translate-y-1/2 bg-red-700 hover:bg-red-800 text-white rounded-l-lg shadow-lg px-2 py-3 flex flex-col items-center gap-1 transition-opacity duration-200 ${
           isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
         style={{ top: "50%", right: "0px" }}

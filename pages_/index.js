@@ -5,9 +5,16 @@ import db from "~/utils/firebase/index";
 import Button from "~/components/Button";
 import Main from "~/components/Main";
 import Footer from "~/components/Footer";
+import Select from "~/components/Select";
 import { Timestamp } from "~/utils/firebase/index";
 import useTranslation from "next-translate/useTranslation";
 import Router from "next-translate/Router";
+
+const PLAYER_COUNT_OPTIONS = [
+  { id: "2", name: "2" },
+  { id: "3", name: "3" },
+  { id: "4", name: "4" },
+];
 
 export default function NewGame() {
   const { t } = useTranslation();
@@ -48,42 +55,36 @@ export default function NewGame() {
   return (
     <Main color="gray">
       <Layout />
-      <div className="flex-auto px-4 py-8 px-4 py-8 mx-auto w-full">
+      <div className="flex-auto px-4 py-8 mx-auto w-full">
         <div className="flex items-center justify-center">
           <div className="w-full max-w-lg ">
-            <div className="bg-white p-4 rounded shadow">
-              <div className="items-center justify-between ">
-                <h1 className="text-gray-700 text-lg font-bold text-center">
-                  <p>{t("common:new-game")}</p>
+            <div className="bg-white p-6 rounded-lg shadow-2xl">
+              <div className="items-center justify-between mb-2">
+                <h1 className="text-red-600 text-2xl font-extrabold text-center">
+                  {t("common:new-game")}
                 </h1>
               </div>
-              <form
-                onSubmit={onSubmit}
-                className="bg-white rounded px-8 pt-6 pb-8 mb-4"
-              >
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-base font-bold mb-6">
-                    <p className="mb-2">{t("index:players-number")}</p>
-                    <select
-                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                    >
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                    </select>
-                  </label>
-                </div>
+              <form onSubmit={onSubmit} className="bg-white rounded px-2 pt-4 pb-2 mb-4">
                 <div className="mb-6">
+                  <p className="text-gray-700 text-base font-bold mb-2">
+                    {t("index:players-number")}
+                  </p>
+                  <Select
+                    id="players-number"
+                    value={value}
+                    onChange={setValue}
+                    options={PLAYER_COUNT_OPTIONS}
+                  />
+                </div>
+                <div className="mb-8">
                   <label className="block text-gray-700 text-base font-bold mb-2">
-                    <p className="mb-4">{t("common:nickname")} </p>
+                    <p className="mb-2">{t("common:nickname")} </p>
                     <input
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder={t("common:nickname-holder")}
                       type="text"
-                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                      className="appearance-none bg-gray-100 border-2 border-gray-200 rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-red-400 hover:border-gray-400 transition duration-150 ease-in-out"
                       required
                     />
                   </label>

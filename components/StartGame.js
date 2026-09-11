@@ -1,6 +1,5 @@
 import Heading from "~/components/Heading";
 import GameInProgress from "~/components/GameInProgress";
-import Winner from "~/components/Winner";
 import useTranslation from "next-translate/useTranslation";
 
 export default function StartGame({
@@ -11,6 +10,7 @@ export default function StartGame({
   onNewGame,
   reactionsByPlayer,
   messagesByPlayer,
+  isSpectator,
 }) {
   const { t } = useTranslation();
 
@@ -34,6 +34,7 @@ export default function StartGame({
         onNewGame={onNewGame}
         reactionsByPlayer={reactionsByPlayer}
         messagesByPlayer={messagesByPlayer}
+        isSpectator={isSpectator}
       />
     );
   }

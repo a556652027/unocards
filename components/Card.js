@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { cards } from "~/utils/cards";
 const colors = {
-  red: "#f55",
-  yellow: "#fa0",
-  blue: "#55f",
-  green: "#5a5",
-  none: "#000",
+  red: "#EF4444",
+  yellow: "#FACC15",
+  blue: "#3B82F6",
+  green: "#22C55E",
+  none: "#27272A",
 };
 
 const numberShapes = [
@@ -609,7 +609,7 @@ const Card = ({
       // style={{ height: `${size}em` }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 61 91"
-      className={`w-${sizeSM} md:w-${sizeMD}`}
+      className={`w-${sizeSM} md:w-${sizeMD} rounded-lg shadow-md`}
     >
       {singleCard}
     </svg>
@@ -641,7 +641,7 @@ const BackCard = ({ sizeSM, sizeMD, size, onRemove, onAdd }) => {
         x=".5"
         y=".5"
       />
-      <rect fill="#000" height="80" rx="5" width="50" x="5.5" y="5.5" />
+      <rect fill="#1F2937" height="80" rx="5" width="50" x="5.5" y="5.5" />
       <svg
         style={{ height: "10em" }}
         xmlns="http://www.w3.org/2000/svg"
@@ -802,7 +802,7 @@ const BackCard = ({ sizeSM, sizeMD, size, onRemove, onAdd }) => {
       // style={{ height: `${size}em` }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 61 91"
-      className={`w-${sizeSM} md:w-${sizeMD} inline`}
+      className={`w-${sizeSM} md:w-${sizeMD} inline rounded-lg shadow-md`}
     >
       {backCard}
     </svg>

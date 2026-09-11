@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import useTranslation from "next-translate/useTranslation";
-import React, { Fragment } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Select({
   disabled = false,
@@ -12,51 +12,89 @@ export default function Select({
   value,
 }) {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find((option) => option.id === value);
 
   return (
-    <Fragment>
-      <label htmlFor={id} className="flex flex-col ">
-        {label && <span className="mb-1">{label}</span>}
-        <div className="inline-block relative">
-          <select
-            id={id}
-            aria-label={id}
-            className={classnames([
-              "appearance-none  text-gray-700 bg-transparent rounded w-full text-sm sm:text-base",
-              "px-2 md:px-2 my-1 ml-0 mr-2 md:m-2",
-              "focus:border-gray-600 focus:outline-none focus:shadow-outline hover:border-gray-500",
-              "duration-150 ease-in-out transition",
-              "disabled:opacity-50",
-            ])}
-            value={value}
-            onChange={(event) => onChange && onChange(event.target.value)}
-            disabled={disabled}
-            onBlur={() => void 0}
+    <div ref={containerRef} className="relative flex flex-col">
+      {label && <span className="mb-1">{label}</span>}
+      <button
+        type="button"
+        id={id}
+        aria-label={id}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        disabled={disabled}
+        onClick={() => setIsOpen((open) => !open)}
+        className={classnames([
+          "flex items-center justify-between w-full text-gray-800 bg-white border-2 border-gray-200 rounded-lg shadow-sm text-sm sm:text-base font-semibold cursor-pointer",
+          "pl-3 pr-2 py-2 my-1 ml-0 mr-2 md:m-2",
+          "focus:border-red-500 focus:outline-none focus:shadow-md hover:border-red-300",
+          "duration-150 ease-in-out transition",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
+        ])}
+      >
+        <span>
+          {selectedOption
+            ? selectedOption.name
+            : t("common:select-empty-option")}
+        </span>
+        <span
+          className={`flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-600 ml-2 transform transition-transform duration-150 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        >
+          <svg
+            className="fill-current h-3 w-3"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
           >
-            {!value && (
-              <option value={""}>{t("common:select-empty-option")}</option>
-            )}
-            {options.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
+            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+          </svg>
+        </span>
+      </button>
 
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-0 py-3 text-gray-700">
-            <svg
-              className="fill-current h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
-          </div>
-        </div>
-      </label>
+      {isOpen && (
+        <ul
+          role="listbox"
+          className="absolute z-40 top-full mt-1 min-w-full bg-white border-2 border-gray-200 rounded-lg shadow-2xl overflow-hidden py-1"
+        >
+          {options.map((option) => (
+            <li key={option.id} role="option" aria-selected={option.id === value}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange && onChange(option.id);
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-4 py-2 text-sm sm:text-base font-medium whitespace-nowrap transition duration-100 ${
+                  option.id === value
+                    ? "bg-red-50 text-red-600 font-bold"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                {option.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
       {hint && (
         <p className="italic mt-1 text-gray-800 text-xs md:text-sm">{hint}</p>
       )}
-    </Fragment>
+    </div>
   );
 }

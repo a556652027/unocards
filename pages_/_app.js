@@ -47,11 +47,11 @@ const translations = (lang) => {
       };
     default:
       return {
-        title: "UNO Card Game | UNO online",
+        title: "UNO 紙牌遊戲 | UNO 線上版",
         href: "https://uno-game.now.sh",
-        content: "UNO Juega gratis UNO Online",
+        content: "UNO 紙牌遊戲 | 免費線上玩 UNO",
         metaDesc:
-          "Juega al UNO, el famoso juego de cartas de forma gratis y online, ahora puedes jugar con tus amigos o tu familia desde cualquier dispositivo sin necesidad de instalar nada. #UnoGame",
+          "免費線上玩 UNO 紙牌遊戲，現在你可以透過任何裝置，跟朋友或家人一起遊玩，不需要安裝任何應用程式。#UNOGame",
       };
   }
 };

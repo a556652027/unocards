@@ -10,6 +10,7 @@ export default function BoardLayout({
   yellOneMessage,
   winner,
   onNewGame,
+  readOnly,
 }) {
   const { t } = useTranslation();
   const currentPlayer = players.find((player) => player.id == currentPlayerId);
@@ -68,8 +69,13 @@ export default function BoardLayout({
       >
         {winner ? (
           <div className="flex flex-no-wrap">
-            <h1 className="z-10 bg-red-700 text-white m-2 font-medium text-center text-xl md:text-2x p-4 rounded">
-              {t("playerId:winner-board.winner")} {winner.data().name}
+            <h1
+              className="z-10 text-white m-2 font-extrabold text-center text-2xl md:text-3xl p-6 rounded-lg shadow-2xl winner-pop-in"
+              style={{
+                background: "linear-gradient(135deg, #EF4444, #FACC15)",
+              }}
+            >
+              🏆 {t("playerId:winner-board.winner")} {winner.data().name} 🎉
             </h1>
             {discardPile}
           </div>
@@ -82,12 +88,14 @@ export default function BoardLayout({
 
         <div className="m-4 md:m-4 w-full sm:w-1/2 flex justify-center flex-col">
           {winner ? (
-            <button
-              className="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onNewGame()}
-            >
-              {t("playerId:winner-board.replay")}
-            </button>
+            readOnly ? null : (
+              <button
+                className="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 active:translate-y-0 transition duration-150 mr-2"
+                onClick={() => onNewGame()}
+              >
+                {t("playerId:winner-board.replay")}
+              </button>
+            )
           ) : (
             playerOptions
           )}

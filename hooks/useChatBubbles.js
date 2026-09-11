@@ -2,10 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import db from "~/utils/firebase";
 
 const DISPLAY_DURATION_MS = 5000;
+const MESSAGE_SOUND_URL = "/audio/message_quack.mp3";
 
 export default function useChatBubbles(roomId) {
   const [messagesByPlayer, setMessagesByPlayer] = useState({});
   const isFirstSnapshot = useRef(true);
+  const messageAudioRef = useRef(null);
+
+  useEffect(() => {
+    messageAudioRef.current = new Audio(MESSAGE_SOUND_URL);
+  }, []);
 
   useEffect(() => {
     if (!roomId) return;
@@ -32,6 +38,11 @@ export default function useChatBubbles(roomId) {
           ...current,
           [data.playerId]: { ...data, localId },
         }));
+
+        if (messageAudioRef.current) {
+          messageAudioRef.current.currentTime = 0;
+          messageAudioRef.current.play().catch(() => {});
+        }
 
         setTimeout(() => {
           setMessagesByPlayer((current) => {

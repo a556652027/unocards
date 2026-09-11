@@ -54,47 +54,59 @@ export default function Room() {
 
   // , [roomId]);
 
-  if (roomIsFull) {
+  const onWatch = () => {
+    Router.pushI18n("/rooms/[roomId]/watch", `/rooms/${roomId}/watch`);
+  };
+
+  if (roomIsFull || roomPlaying) {
     return (
-      <Main>
+      <Main color="gray" justify="center">
         <Layout />
-        <p className="text-white">{t("roomId:no-more-place")}</p>
-      </Main>
-    );
-  } else if (roomPlaying) {
-    return (
-      <Main>
-        <Layout />
-        <p className="text-white">{t("roomId:game-isplaying")}</p>
+        <div className="flex-auto px-4 py-8 mx-auto w-full">
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-lg">
+              <div className="bg-white p-6 rounded-lg shadow-2xl text-center">
+                <p className="text-gray-700 font-bold mb-4">
+                  {roomIsFull
+                    ? t("roomId:no-more-place")
+                    : t("roomId:game-isplaying")}
+                </p>
+                <Button color="yellow" onClick={onWatch}>
+                  {t("roomId:watch-as-spectator")}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
       </Main>
     );
   } else {
     return (
       <Main color="gray" justify="center">
         <Layout />
-        <div className="flex-auto px-4 py-8 px-4 py-8 mx-auto w-full">
+        <div className="flex-auto px-4 py-8 mx-auto w-full">
           <div className="flex items-center justify-center">
             <div className="w-full max-w-lg ">
-              <div className="bg-white p-4 rounded shadow">
-                <div className="items-center justify-between ">
-                  <h1 className="text-gray-700 text-lg font-bold text-center">
+              <div className="bg-white p-6 rounded-lg shadow-2xl">
+                <div className="items-center justify-between mb-2">
+                  <h1 className="text-red-600 text-2xl font-extrabold text-center">
                     {t("roomId:join-game")}
                   </h1>
                 </div>
                 <form
-                  className="bg-white rounded px-8 pt-6 pb-8 mb-4"
+                  className="bg-white rounded px-2 pt-4 pb-2 mb-4"
                   onSubmit={onCreateRoom}
                 >
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <label className="block text-gray-700 text-base font-bold mb-2">
-                      <p className="mb-4">{t("common:nickname")}</p>
+                      <p className="mb-2">{t("common:nickname")}</p>
                       <input
-                        className="w-full text-gray-700 border-2 border-gray-300 h-12 mt-1 p-2 rounded g-gray-200 my-4"
+                        className="appearance-none bg-gray-100 border-2 border-gray-200 rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-red-400 hover:border-gray-400 transition duration-150 ease-in-out"
                         value={playerName}
                         onChange={(e) => setPlayerName(e.target.value)}
                         placeholder={t("common:nickname-holder")}
                         type="text"
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                         required
                       ></input>
                     </label>

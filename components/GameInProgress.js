@@ -28,6 +28,7 @@ export default function GameInProgress({
   onNewGame,
   reactionsByPlayer,
   messagesByPlayer,
+  isSpectator,
 }) {
   const { t } = useTranslation();
   const [wildCard, setWildCard] = useState(null);
@@ -62,14 +63,20 @@ export default function GameInProgress({
         renderPlayer={(player, isCurrentPlayer) => (
           <>
             <div className="relative">
-              <PlayerMessageBubble message={messagesByPlayer?.[player.id]} />
-              <PlayerReactionBubble reaction={reactionsByPlayer?.[player.id]} />
+              <PlayerMessageBubble
+                message={messagesByPlayer?.[player.id]}
+                position={isCurrentPlayer ? "side" : "above"}
+              />
+              <PlayerReactionBubble
+                reaction={reactionsByPlayer?.[player.id]}
+                position={isCurrentPlayer ? "side" : "above"}
+              />
               <HeaderPlayer color="white" type="h1" margin="0" marginBottom="1">
                 <span
                   className={
                     currentMovePlayer.id == player.id
-                      ? "p-2 rounded text-black font-bold pl-2 animation"
-                      : "opacity-50 pl-2"
+                      ? "px-3 py-1 rounded-full bg-yellow-400 text-black font-bold turn-glow inline-block"
+                      : "opacity-60 pl-2"
                   }
                 >
                   {currentMovePlayer.id == player.id ? <span>👉 </span> : null}
@@ -95,6 +102,7 @@ export default function GameInProgress({
               onCardAdd={onCardAdd}
               onCardRemove={onCardRemove}
               winner={winner}
+              revealAll={isSpectator}
             />
           </>
         )}
@@ -114,7 +122,7 @@ export default function GameInProgress({
           />
         }
         playerOptions={
-          wildCard ? (
+          isSpectator ? null : wildCard ? (
             <WildCardOptions
               onChooseColor={(color) => onDiscardACard(wildCard, color)}
             />
@@ -130,13 +138,15 @@ export default function GameInProgress({
         }
         yellOneMessage={
           room.yellOne != null ? (
-            <h1 className="z-10 bg-red-700 text-white m-2 font-medium text-center text-xl md:text-2x p-4 rounded">
-              {t("playerId:yell-one")} {playersActive[room.yellOne].data().name}
+            <h1 className="z-10 bg-red-600 text-white m-2 font-bold text-center text-xl md:text-2xl p-4 rounded-lg shadow-xl winner-pop-in">
+              📢 {t("playerId:yell-one")}{" "}
+              {playersActive[room.yellOne].data().name}
             </h1>
           ) : null
         }
         winner={winner}
         onNewGame={onNewGame}
+        readOnly={isSpectator}
       />
     </div>
   );

@@ -2,7 +2,7 @@ import { Card } from "~/components/Card";
 
 export default function DiscardPile({ discardPile, discardColor, pileRef }) {
   return (
-    <button ref={pileRef}>
+    <button ref={pileRef} style={{ transform: "rotate(3deg)" }}>
       <Card
         sizeSM={16}
         sizeMD={20}

@@ -8,6 +8,7 @@ export default function PlayerCards({
   onCardAdd,
   onCardRemove,
   winner,
+  revealAll,
 }) {
   return (
     <div
@@ -31,7 +32,15 @@ export default function PlayerCards({
               key={card}
               className="-mx-4 lg:-mx-6 flex flex-col justify-center"
             >
-              <button onClick={() => onDiscardACard(card)} disabled={disabled}>
+              <button
+                onClick={() => onDiscardACard(card)}
+                disabled={disabled}
+                className={`transform transition-transform duration-200 ease-out ${
+                  disabled
+                    ? "cursor-not-allowed"
+                    : "hover:-translate-y-3 hover:scale-105 active:translate-y-0 active:scale-100"
+                }`}
+              >
                 <Card
                   onRemove={onCardRemove}
                   onAdd={onCardAdd}
@@ -50,7 +59,7 @@ export default function PlayerCards({
                 left: `${(100 / (cards.length + 1)) * (index + 1)}%`,
               }}
             >
-              {winner ? (
+              {winner || revealAll ? (
                 <Card
                   onRemove={onCardRemove}
                   onAdd={onCardAdd}

@@ -1,6 +1,5 @@
 // import Link from "next/link";
 import Link from "next-translate/Link";
-import Heading from "~/components/Heading";
 import Container from "~/components/Container";
 import Modal from "~/components/Modal";
 import React, { useState } from "react";
@@ -44,26 +43,24 @@ export default function Header() {
   // const href = router.asPath === "/" ? "/" : `/${lang}`;
 
   return (
-    <header className="w-full h-12 bg-white px-4 py-2">
+    <header className="w-full h-14 bg-white px-4 py-2 shadow-md relative z-10">
       <Container size="large">
-        <div className="flex items-center justify-between">
-          <Heading type="h1">
-            <Link href="/">
-              <span className="cursor-pointer duration-150 ease-in-out focus:outline-none focus:shadow-outline outline-none transition">
-                UNO
-              </span>
-            </Link>
-          </Heading>
+        <div className="flex items-center justify-between h-10">
+          <Link href="/">
+            <span className="cursor-pointer duration-150 ease-in-out hover:scale-105 focus:outline-none outline-none transition transform inline-block">
+              <img src="/cards/UNO_Logo.svg" alt="UNO" className="h-10" />
+            </span>
+          </Link>
 
           <div className="flex items-center justify-end">
             <Link href="/">
-              <a className="text-gray-700 text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 ">
+              <a className="text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out">
                 {t("common:new-game")}
               </a>
             </Link>
             <button
               id="rules"
-              className="focus:outline-none focus:shadow-outline text-gray-700 text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 "
+              className="focus:outline-none focus:shadow-outline text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out"
               onClick={() => {
                 setShowModal(true);
               }}

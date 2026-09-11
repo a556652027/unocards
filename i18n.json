@@ -1,7 +1,7 @@
 {
   "allLanguages": ["es", "en", "zh-TW"],
   "currentPagesDir": "pages_",
-  "defaultLanguage": "es",
+  "defaultLanguage": "zh-TW",
   "defaultLangRedirect": "root",
   "finalPagesDir": "pages",
   "localesPath": "locales",
@@ -9,6 +9,7 @@
     "*": ["common"],
     "/": ["index"],
     "/rooms/[roomId]": ["roomId"],
-    "/rooms/[roomId]/players/[playerId]": ["playerId"]
+    "/rooms/[roomId]/players/[playerId]": ["playerId"],
+    "/rooms/[roomId]/watch": ["watch"]
   }
 }
