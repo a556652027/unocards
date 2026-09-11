@@ -5,6 +5,7 @@ import {
   isSkip,
   isWildDrawFour,
   isDrawTwo,
+  isAllowedToThrow,
 } from "~/utils/game";
 
 function getPlayingCards(playersCards, discardPile) {
@@ -132,17 +133,48 @@ export function drawCard(roomId, playersActive) {
         { merge: true }
       );
     } else {
-      transaction.set(
-        roomRef,
-        {
-          deckDict: usedCards,
-          yellOne: null,
-          drawCount,
-          drawPile: true,
-          pennalty: null,
-        },
-        { merge: true }
+      const canPlay = playerCards.some((c) =>
+        isAllowedToThrow(
+          c,
+          freshRoom.discardPile,
+          freshRoom.discardColor,
+          0,
+          playerCards
+        )
       );
+
+      if (canPlay) {
+        transaction.set(
+          roomRef,
+          {
+            deckDict: usedCards,
+            yellOne: null,
+            drawCount,
+            drawPile: true,
+            pennalty: null,
+          },
+          { merge: true }
+        );
+      } else {
+        const totalPlayers = playersActive.length;
+        const direction = freshRoom.isReverse ? -1 : 1;
+        const nextPlayer =
+          (totalPlayers + (player + direction)) % totalPlayers;
+
+        transaction.set(
+          roomRef,
+          {
+            deckDict: usedCards,
+            yellOne: null,
+            drawCount: 0,
+            drawPile: false,
+            pennalty: null,
+            currentMove: nextPlayer,
+            previousMove: player,
+          },
+          { merge: true }
+        );
+      }
     }
   });
 }

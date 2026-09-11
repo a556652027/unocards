@@ -8,6 +8,12 @@ export default function CurrentMovePlayerOptiones({
   onYellOne,
 }) {
   const { t } = useTranslation();
+  const alreadyYelled = room.yellOne === room.currentMove;
+  const shouldYell =
+    currentMovePlayer.id == playerId &&
+    !alreadyYelled &&
+    currentMovePlayer.data().cards.length === 2;
+
   return (
     <div
       className={`px-8 sm:px-0 flex flex-1 flex-row mt-1 justify-center ${
@@ -25,7 +31,9 @@ export default function CurrentMovePlayerOptiones({
       </button>
       <button
         onClick={() => onYellOne(room.currentMove)}
-        className={`text-2xl md:text-xl bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 md:p-2 rounded ml-2`}
+        className={`text-2xl md:text-xl bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 md:p-2 rounded ml-2 ${
+          shouldYell ? "uno-glow" : ""
+        }`}
       >
         UNO!
       </button>

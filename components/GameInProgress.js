@@ -79,6 +79,7 @@ export default function GameInProgress({
               isCurrentPlayer={isCurrentPlayer}
               onDiscardACard={onDiscardACard}
               isCardDisabled={(card) =>
+                !!winner ||
                 currentMovePlayer.id != player.id ||
                 !isAllowedToThrow(
                   card,
