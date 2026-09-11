@@ -9,6 +9,7 @@ export default function StartGame({
   playersActive,
   playerId,
   onNewGame,
+  reactionsByPlayer,
 }) {
   const { t } = useTranslation();
 
@@ -30,6 +31,7 @@ export default function StartGame({
         playerId={playerId}
         winner={winner}
         onNewGame={onNewGame}
+        reactionsByPlayer={reactionsByPlayer}
       />
     );
   }

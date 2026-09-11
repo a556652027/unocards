@@ -6,6 +6,8 @@ import db from "~/utils/firebase";
 import StartGame from "~/components/StartGame";
 import Chat from "~/components/Chat";
 import EmojiReactions from "~/components/EmojiReactions";
+import PlayerReactionBubble from "~/components/PlayerReactionBubble";
+import useReactions from "~/hooks/useReactions";
 import { takeACard, isWild, isWildDrawFour, isDrawTwo } from "~/utils/game";
 import Button from "~/components/Button";
 import Main from "~/components/Main";
@@ -23,6 +25,7 @@ export default function Game() {
   const playerId = router.query.playerId;
   const currentPlayer = playersActive.find((player) => player.id === playerId);
   const playerName = currentPlayer ? currentPlayer.data().name : "";
+  const reactionsByPlayer = useReactions(roomId);
   // const link_jugadores = router.asPath;
 
   useEffect(() => {
@@ -113,6 +116,7 @@ export default function Game() {
           playersActive={playersActive}
           playerId={playerId}
           onNewGame={onNewGame}
+          reactionsByPlayer={reactionsByPlayer}
         />
         <Chat roomId={roomId} playerId={playerId} playerName={playerName} />
         <EmojiReactions
@@ -129,10 +133,13 @@ export default function Game() {
       playersSlots.push(
         <li className="py-2 text-gray-700" key={i}>
           <div className="flex">
-            <span className="flex-auto">
+            <div className="relative flex-auto">
+              {player && (
+                <PlayerReactionBubble reaction={reactionsByPlayer?.[player.id]} />
+              )}
               {player ? player.data().name : t("playerId:waiting-player")}
               {player && player.id === playerId ? t("playerId:you") : null}
-            </span>
+            </div>
             {player ? <span>✅</span> : null}
           </div>
         </li>

@@ -16,6 +16,7 @@ import {
 } from "~/gameLogic/gameLogic";
 import useTranslation from "next-translate/useTranslation";
 import HeaderPlayer from "~/components/HeaderPlayer";
+import PlayerReactionBubble from "~/components/PlayerReactionBubble";
 
 export default function GameInProgress({
   room,
@@ -24,6 +25,7 @@ export default function GameInProgress({
   playerId,
   winner,
   onNewGame,
+  reactionsByPlayer,
 }) {
   const { t } = useTranslation();
   const [wildCard, setWildCard] = useState(null);
@@ -57,18 +59,21 @@ export default function GameInProgress({
         currentPlayerId={playerId}
         renderPlayer={(player, isCurrentPlayer) => (
           <>
-            <HeaderPlayer color="white" type="h1" margin="0" marginBottom="1">
-              <span
-                className={
-                  currentMovePlayer.id == player.id
-                    ? "p-2 rounded text-black font-bold pl-2 animation"
-                    : "opacity-50 pl-2"
-                }
-              >
-                {currentMovePlayer.id == player.id ? <span>👉 </span> : null}
-                {player.data().name}
-              </span>
-            </HeaderPlayer>
+            <div className="relative">
+              <PlayerReactionBubble reaction={reactionsByPlayer?.[player.id]} />
+              <HeaderPlayer color="white" type="h1" margin="0" marginBottom="1">
+                <span
+                  className={
+                    currentMovePlayer.id == player.id
+                      ? "p-2 rounded text-black font-bold pl-2 animation"
+                      : "opacity-50 pl-2"
+                  }
+                >
+                  {currentMovePlayer.id == player.id ? <span>👉 </span> : null}
+                  {player.data().name}
+                </span>
+              </HeaderPlayer>
+            </div>
             <PlayerCards
               cards={sortCards(player.data().cards)}
               isCurrentPlayer={isCurrentPlayer}

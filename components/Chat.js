@@ -73,15 +73,19 @@ export default function Chat({ roomId, playerId, playerName }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed top-1/2 right-0 z-30 -translate-y-1/2 bg-red-700 hover:bg-red-800 text-white rounded-l-lg shadow-lg px-2 py-3 flex flex-col items-center gap-1 transition-opacity duration-200 ${
+        className={`fixed z-30 -translate-y-1/2 bg-red-700 hover:bg-red-800 text-white rounded-l-lg shadow-lg px-2 py-3 flex flex-col items-center gap-1 transition-opacity duration-200 ${
           isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
+        style={{ top: "50%", right: "0px" }}
         aria-label="open chat"
       >
         <span className="relative text-xl">
           💬
           {unreadCount > 0 && (
-            <span className="absolute -top-2 -right-3 bg-yellow-400 text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+            <span
+              className="absolute bg-yellow-400 text-black text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center"
+              style={{ top: "-0.5rem", right: "-0.75rem" }}
+            >
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -89,8 +93,13 @@ export default function Chat({ roomId, playerId, playerName }) {
       </button>
 
       <div
-        className="fixed top-1/2 -translate-y-1/2 z-30 w-72 max-w-[85vw] h-[70vh] max-h-[520px] bg-white rounded-l-lg shadow-lg border border-gray-300 flex flex-col overflow-hidden"
+        className="fixed z-30 -translate-y-1/2 bg-white rounded-l-lg shadow-lg border border-gray-300 flex flex-col overflow-hidden"
         style={{
+          top: "50%",
+          width: "18rem",
+          maxWidth: "85vw",
+          height: "70vh",
+          maxHeight: "520px",
           right: isOpen ? "0px" : "-18rem",
           transition: "right 300ms ease-in-out",
         }}
@@ -154,7 +163,7 @@ export default function Chat({ roomId, playerId, playerName }) {
           />
           <button
             type="submit"
-            className="px-3 py-2 text-red-600 font-bold text-sm focus:outline-none disabled:opacity-40"
+            className="px-3 py-2 text-red-600 font-bold text-sm focus:outline-none disabled:opacity-50"
             disabled={!text.trim()}
           >
             {t("playerId:chat.send")}
