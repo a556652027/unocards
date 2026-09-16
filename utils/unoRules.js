@@ -21,6 +21,23 @@ export const skipReverserTxt = (
   </p>
 );
 
+export const skipChallengeTxt = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex-col p-2">
+      <p className="text-red-700 font-bold ">
+        {t("common:rules-modal.skipChallengeTxt-title")}
+      </p>
+      <p>
+        <Trans
+          i18nKey="common:rules-modal.skipChallengeTxt"
+          components={[<b />, <b />]}
+        />
+      </p>
+    </div>
+  );
+};
+
 export const objectTxt = () => {
   const { t } = useTranslation();
   return (

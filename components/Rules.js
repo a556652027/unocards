@@ -3,6 +3,7 @@ import {
   stackFourTxt,
   stackTwoTxt,
   skipReverserTxt,
+  skipChallengeTxt,
   objectTxt,
   setUpTxt,
   gamePlayTxt,
@@ -62,6 +63,7 @@ export default function Rules() {
           </div>
           {stackFourTxt}
         </div>
+        {skipChallengeTxt()}
         <br />
         <div>
           <h2 className="text-red-700 text-lg font-bold text-center">

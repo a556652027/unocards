@@ -17,6 +17,8 @@
     "special-cards": "cartas especiales",
     "stackTwoTxt": "Esta permitido <0>APILAR</0> cartas especiales de TOMA DOS sobre otra carta TOMA DOS, acumulándose las cartas a tomar para al próximo jugador.",
     "stackFourTxt": "También se podrá <0>APILAR</0> cartas TOMA CUATRO COLORES sobre otra carta TOMA CUATRO COLORES , acumulándose las cartas a tomar para al próximo jugador.",
+    "skipChallengeTxt-title": "Desafiar el Paso",
+    "skipChallengeTxt": "Si después de robar elegís <0>Pasar</0>, cualquier otro jugador puede apretar <1>\"Desafiar\"</1> para comprobar si en realidad tenías una carta para jugar y estabas mintiendo. Si te agarran con una carta jugable, robás 2 cartas de penalidad; pero si de verdad no tenías nada para jugar, el que desafió roba 2 cartas. El administrador de la sala puede activar o desactivar esta regla desde la sala de espera antes de empezar la partida.",
     "skipReverserTxt": "La carta <0>RETORNO</0>, funcionará igual que la de <1>'SALTEAR'</1>, se saltea el turno del próximo jugador, debiendo jugar nuevamente el jugador que descarte este carta.",
     "objectTxt-title": "Objetivo del juego",
     "objectTxt": "El objetivo del <0>juego UNO</0> es deshacerse de todas las cartas que se vaya teniendo en la mano, para ello debe coincidir <1>el número, el color o el símbolo/Acción</1> de la carta que vayamos a descartar con la que se encuentre en el mazo de descarte. ¡No olvides pulsar el botón <1>UNO!</1> cuando te quede una sola carta!. Gana el juego el primero que se queda sin cartas.",

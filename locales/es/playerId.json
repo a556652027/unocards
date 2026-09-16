@@ -5,6 +5,10 @@
   "link": "Link para compartir:",
   "watch-link": "Link para espectadores",
   "players": "Jugadores:",
+  "room-rules": {
+    "title": "Reglas de la sala",
+    "skip-challenge": "Activar la regla \"Desafiar el Paso\""
+  },
   "start": "Empezar",
   "copied": "Copiado!",
   "copy-link": "Click para copiar link",
@@ -16,7 +20,13 @@
     "blue": "Azul"
   },
   "player-options": {
-    "pass": "PASO"
+    "pass": "PASO",
+    "challenge": "Desafiar"
+  },
+  "skip-challenge": {
+    "prompt": "{{name}} decidió pasar su turno. ¡Podés desafiarlo!",
+    "caught": "¡{{name}} sí tenía una carta para jugar y fue descubierto! Roba 2 cartas.",
+    "false-alarm": "{{name}} realmente no tenía carta para jugar. El desafío falló, así que {{challenger}} roba 2 cartas."
   },
   "winner-board": {
     "winner": "Ganó el jugador: ",

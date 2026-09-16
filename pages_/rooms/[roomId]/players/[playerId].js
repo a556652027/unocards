@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import db from "~/utils/firebase";
 import StartGame from "~/components/StartGame";
+import RoomRules from "~/components/RoomRules";
 import Chat from "~/components/Chat";
 import EmojiReactions from "~/components/EmojiReactions";
 import PlayerReactionBubble from "~/components/PlayerReactionBubble";
@@ -96,6 +97,7 @@ export default function Game() {
         drawCount: drawCount,
         yellOne: null,
         pennalty: null,
+        pendingChallenge: null,
       },
       { merge: true }
     );
@@ -207,6 +209,11 @@ export default function Game() {
                   </p>
                   <ol className="pl-0">{playersSlots}</ol>
                 </div>
+                <RoomRules
+                  room={room}
+                  roomId={roomId}
+                  isAdmin={currentPlayer?.data().admin === true}
+                />
                 {playersActive.map((player) => {
                   const isAdmin =
                     player.data().admin == true && player.id == playerId;

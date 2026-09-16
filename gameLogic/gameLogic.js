@@ -46,6 +46,25 @@ export function passTurn(player, roomId, playersActive) {
     const playingCards = getPlayingCards(playersCards, freshRoom.discardPile);
     const usedCards = freshRoom.deckDict;
 
+    // House rule, on by default - the room admin can turn it off from the
+    // lobby before the game starts.
+    const skipChallengeEnabled = freshRoom.rules?.skipChallenge !== false;
+
+    // Snapshot whether the passing player actually had a playable card in
+    // hand *before* any UNO-penalty cards get added below, so other players
+    // can challenge ("驗牌") a bluffed skip afterwards.
+    const hadPlayableCard =
+      skipChallengeEnabled &&
+      playerCards.some((c) =>
+        isAllowedToThrow(
+          c,
+          freshRoom.discardPile,
+          freshRoom.discardColor,
+          0,
+          playerCards
+        )
+      );
+
     const pennalty = freshRoom.pennalty;
     if (pennalty > 0) {
       for (let i = 0; i < pennalty; i++) {
@@ -71,9 +90,87 @@ export function passTurn(player, roomId, playersActive) {
         drawCount: 0,
         drawPile: false,
         pennalty: null,
+        pendingChallenge: skipChallengeEnabled
+          ? {
+              status: "pending",
+              skippedPlayer: player,
+              hadPlayableCard,
+            }
+          : null,
       },
       { merge: true }
     );
+  });
+}
+
+export function challengeSkip(challenger, roomId, playersActive) {
+  const roomRef = db.collection("rooms").doc(roomId);
+
+  return db.runTransaction(async (transaction) => {
+    const [roomSnap, ...playerSnaps] = await Promise.all([
+      transaction.get(roomRef),
+      ...playersActive.map((p) => transaction.get(p.ref)),
+    ]);
+    const freshRoom = roomSnap.data();
+    const pendingChallenge = freshRoom.pendingChallenge;
+
+    // Already resolved (or someone else's challenge got there first) - no-op.
+    if (!pendingChallenge || pendingChallenge.status !== "pending") {
+      return;
+    }
+
+    const { skippedPlayer, hadPlayableCard } = pendingChallenge;
+    const playersCards = playerSnaps.map((snap) => snap.data().cards);
+    const playingCards = getPlayingCards(playersCards, freshRoom.discardPile);
+    const usedCards = freshRoom.deckDict;
+
+    // Caught bluffing -> the skipper draws 2. Genuine skip -> the
+    // challenger draws 2 for a false accusation.
+    const penalizedPlayer = hadPlayableCard ? skippedPlayer : challenger;
+    const penalizedCards = playersCards[penalizedPlayer];
+
+    for (let i = 0; i < 2; i++) {
+      const newCard = takeACard(usedCards, playingCards);
+      penalizedCards.push(newCard);
+      playingCards.push(newCard);
+    }
+
+    transaction.set(
+      playersActive[penalizedPlayer].ref,
+      { cards: penalizedCards },
+      { merge: true }
+    );
+
+    transaction.set(
+      roomRef,
+      {
+        deckDict: usedCards,
+        pendingChallenge: {
+          status: "resolved",
+          skippedPlayer,
+          hadPlayableCard,
+          challenger,
+        },
+      },
+      { merge: true }
+    );
+  });
+}
+
+export function clearPendingChallenge(roomId) {
+  const roomRef = db.collection("rooms").doc(roomId);
+
+  return db.runTransaction(async (transaction) => {
+    const roomSnap = await transaction.get(roomRef);
+    const freshRoom = roomSnap.data();
+
+    // Only clear a challenge that has already been resolved - never
+    // clobber a challenge someone just opened (still "pending").
+    if (freshRoom.pendingChallenge?.status !== "resolved") {
+      return;
+    }
+
+    transaction.set(roomRef, { pendingChallenge: null }, { merge: true });
   });
 }
 
@@ -129,52 +226,26 @@ export function drawCard(roomId, playersActive) {
           previousMove: player,
           drawPile: false,
           pennalty: null,
+          pendingChallenge: null,
         },
         { merge: true }
       );
     } else {
-      const canPlay = playerCards.some((c) =>
-        isAllowedToThrow(
-          c,
-          freshRoom.discardPile,
-          freshRoom.discardColor,
-          0,
-          playerCards
-        )
+      // Drawing a card never auto-skips the turn anymore, even when the
+      // player still has no playable card - they must press "Pass"
+      // themselves, which opens up a "驗牌" challenge window for the others.
+      transaction.set(
+        roomRef,
+        {
+          deckDict: usedCards,
+          yellOne: null,
+          drawCount,
+          drawPile: true,
+          pennalty: null,
+          pendingChallenge: null,
+        },
+        { merge: true }
       );
-
-      if (canPlay) {
-        transaction.set(
-          roomRef,
-          {
-            deckDict: usedCards,
-            yellOne: null,
-            drawCount,
-            drawPile: true,
-            pennalty: null,
-          },
-          { merge: true }
-        );
-      } else {
-        const totalPlayers = playersActive.length;
-        const direction = freshRoom.isReverse ? -1 : 1;
-        const nextPlayer =
-          (totalPlayers + (player + direction)) % totalPlayers;
-
-        transaction.set(
-          roomRef,
-          {
-            deckDict: usedCards,
-            yellOne: null,
-            drawCount: 0,
-            drawPile: false,
-            pennalty: null,
-            currentMove: nextPlayer,
-            previousMove: player,
-          },
-          { merge: true }
-        );
-      }
     }
   });
 }
@@ -251,6 +322,7 @@ export function discardACard(roomId, playersActive, card, color) {
         drawCount,
         drawPile: false,
         pennalty: null,
+        pendingChallenge: null,
       },
       { merge: true }
     );

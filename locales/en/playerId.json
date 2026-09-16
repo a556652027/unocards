@@ -5,6 +5,10 @@
   "link": "Link to share",
   "watch-link": "Spectator link",
   "players": "Players",
+  "room-rules": {
+    "title": "Room Rules",
+    "skip-challenge": "Enable \"Challenge on Skip\" rule"
+  },
   "start": "Start",
   "copied": "Copied!",
   "copy-link": "Click to copy link",
@@ -16,7 +20,13 @@
     "blue": "Blue"
   },
   "player-options": {
-    "pass": "Pass"
+    "pass": "Pass",
+    "challenge": "Challenge"
+  },
+  "skip-challenge": {
+    "prompt": "{{name}} chose to skip their turn. You can challenge them!",
+    "caught": "{{name}} actually had a playable card and got caught bluffing! They draw 2 cards.",
+    "false-alarm": "{{name}} really had no playable card. The challenge failed, so {{challenger}} draws 2 cards instead."
   },
   "winner-board": {
     "winner": "The winner is: ",

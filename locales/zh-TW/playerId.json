@@ -5,6 +5,10 @@
   "link": "分享連結",
   "watch-link": "分享觀戰連結",
   "players": "玩家",
+  "room-rules": {
+    "title": "房間規則設定",
+    "skip-challenge": "啟用「跳過驗牌」規則"
+  },
   "start": "開始",
   "copied": "已複製！",
   "copy-link": "點擊複製連結",
@@ -16,7 +20,13 @@
     "blue": "藍色"
   },
   "player-options": {
-    "pass": "跳過"
+    "pass": "跳過",
+    "challenge": "驗牌"
+  },
+  "skip-challenge": {
+    "prompt": "{{name}} 選擇跳過回合，可以「驗牌」！",
+    "caught": "{{name}} 其實有牌可出卻選擇跳過，被抓到了！抽 2 張牌作為懲罰。",
+    "false-alarm": "{{name}} 確實沒有牌可出，驗牌失敗，{{challenger}} 抽 2 張牌作為懲罰。"
   },
   "winner-board": {
     "winner": "獲勝者：",

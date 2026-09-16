@@ -14,7 +14,8 @@ service cloud.firestore {
 
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([
         'playing', 'discardPile', 'discardColor', 'currentMove', 'previousMove',
-        'deckDict', 'isReverse', 'drawPile', 'drawCount', 'yellOne', 'pennalty'
+        'deckDict', 'isReverse', 'drawPile', 'drawCount', 'yellOne', 'pennalty',
+        'pendingChallenge', 'rules'
       ]);
 
       allow delete: if false;

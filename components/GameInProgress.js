@@ -1,10 +1,14 @@
 import useCardAnimations from "~/hooks/useCardAnimations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isAllowedToThrow, isWild, sortCards } from "~/utils/game";
 import Heading from "~/components/Heading";
 import PlayerCards from "~/components/PlayerCards";
 import WildCardOptions from "~/components/WildCardOptions";
 import CurrentMovePlayerOptions from "~/components/CurrentMovePlayerOptions";
+import {
+  SkipChallengePrompt,
+  SkipChallengeResult,
+} from "~/components/SkipChallenge";
 import DrawPile from "~/components/DrawPile";
 import DiscardPile from "~/components/DiscardPile";
 import BoardLayout from "~/components/BoardLayout";
@@ -13,11 +17,15 @@ import {
   passTurn,
   drawCard,
   discardACard,
+  challengeSkip,
+  clearPendingChallenge,
 } from "~/gameLogic/gameLogic";
 import useTranslation from "next-translate/useTranslation";
 import HeaderPlayer from "~/components/HeaderPlayer";
 import PlayerReactionBubble from "~/components/PlayerReactionBubble";
 import PlayerMessageBubble from "~/components/PlayerMessageBubble";
+
+const CHALLENGE_RESULT_DISPLAY_MS = 4000;
 
 export default function GameInProgress({
   room,
@@ -34,6 +42,16 @@ export default function GameInProgress({
   const [wildCard, setWildCard] = useState(null);
   const { drawPileRef, pileRef, onCardAdd, onCardRemove } = useCardAnimations();
   const currentMovePlayer = playersActive[room.currentMove];
+  const pendingChallenge = room.pendingChallenge;
+  const skippedPlayer = pendingChallenge
+    ? playersActive[pendingChallenge.skippedPlayer]
+    : null;
+  const challengerPlayer =
+    pendingChallenge?.challenger != null
+      ? playersActive[pendingChallenge.challenger]
+      : null;
+  const canChallenge =
+    pendingChallenge?.status === "pending" && skippedPlayer?.id !== playerId;
 
   const onYellOne = (player) => {
     yellOne(player, roomId, playersActive);
@@ -46,6 +64,21 @@ export default function GameInProgress({
   const onDrawCard = () => {
     drawCard(roomId, playersActive);
   };
+
+  const onChallengeSkip = () => {
+    const challenger = playersActive.findIndex((p) => p.id === playerId);
+    challengeSkip(challenger, roomId, playersActive);
+  };
+
+  useEffect(() => {
+    if (pendingChallenge?.status !== "resolved") return;
+
+    const timer = setTimeout(() => {
+      clearPendingChallenge(roomId);
+    }, CHALLENGE_RESULT_DISPLAY_MS);
+
+    return () => clearTimeout(timer);
+  }, [pendingChallenge?.status, pendingChallenge?.skippedPlayer, roomId]);
 
   const onDiscardACard = (card, color) => {
     if (isWild(card) && !color) {
@@ -127,13 +160,28 @@ export default function GameInProgress({
               onChooseColor={(color) => onDiscardACard(wildCard, color)}
             />
           ) : (
-            <CurrentMovePlayerOptions
-              currentMovePlayer={currentMovePlayer}
-              playerId={playerId}
-              onPassTurn={onPassTurn}
-              room={room}
-              onYellOne={onYellOne}
-            />
+            <>
+              <CurrentMovePlayerOptions
+                currentMovePlayer={currentMovePlayer}
+                playerId={playerId}
+                onPassTurn={onPassTurn}
+                room={room}
+                onYellOne={onYellOne}
+              />
+              {canChallenge ? (
+                <SkipChallengePrompt
+                  skippedPlayerName={skippedPlayer?.data().name}
+                  onChallenge={onChallengeSkip}
+                />
+              ) : null}
+              {pendingChallenge?.status === "resolved" ? (
+                <SkipChallengeResult
+                  skippedPlayerName={skippedPlayer?.data().name}
+                  challengerName={challengerPlayer?.data().name}
+                  hadPlayableCard={pendingChallenge.hadPlayableCard}
+                />
+              ) : null}
+            </>
           )
         }
         yellOneMessage={
