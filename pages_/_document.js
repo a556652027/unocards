@@ -36,7 +36,7 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://www.google-analytics.com" />
           <link rel="preconnect" href="https://firestore.googleapis.com" />
         </Head>
-        <body className="font-sans leading-normal">
+        <body className="font-sans leading-normal overflow-x-hidden">
           <Main />
           <NextScript />
         </body>

@@ -3,6 +3,7 @@
   max-height: 80vh;
   max-width: 600px;
   outline: none;
+  overflow-x: hidden;
   overflow-y: scroll;
   width: 100%;
 }

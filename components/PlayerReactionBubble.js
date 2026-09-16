@@ -31,7 +31,10 @@ export default function PlayerReactionBubble({ reaction, position = "above" }) {
     >
       <div
         className="rounded-full overflow-hidden border-2 border-white shadow-xl bg-white"
-        style={{ width: "8rem", height: "8rem" }}
+        style={{
+          width: isSide ? "min(8rem, 40vw)" : "min(8rem, 28vw)",
+          height: isSide ? "min(8rem, 40vw)" : "min(8rem, 28vw)",
+        }}
       >
         <img
           src={`/img/${reaction.emoji}`}

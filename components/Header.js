@@ -48,19 +48,23 @@ export default function Header() {
         <div className="flex items-center justify-between h-10">
           <Link href="/">
             <span className="cursor-pointer duration-150 ease-in-out hover:scale-105 focus:outline-none outline-none transition transform inline-block">
-              <img src="/cards/UNO_Logo.svg" alt="UNO" className="h-10" />
+              <img
+                src="/cards/UNO_Logo.svg"
+                alt="UNO"
+                className="h-8 sm:h-10"
+              />
             </span>
           </Link>
 
           <div className="flex items-center justify-end">
             <Link href="/">
-              <a className="text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out">
+              <a className="text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-1 sm:px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out">
                 {t("common:new-game")}
               </a>
             </Link>
             <button
               id="rules"
-              className="focus:outline-none focus:shadow-outline text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out"
+              className="focus:outline-none focus:shadow-outline text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-1 sm:px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out"
               onClick={() => {
                 setShowModal(true);
               }}

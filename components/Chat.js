@@ -49,7 +49,7 @@ export default function Chat({ roomId, playerId, playerName }) {
       <div
         className="fixed z-30 bg-white rounded-l-lg shadow-lg border border-gray-300 overflow-hidden"
         style={{
-          top: "3rem",
+          top: "3.5rem",
           width: "16rem",
           maxWidth: "80vw",
           right: isOpen ? "0px" : "-16rem",

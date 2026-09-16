@@ -83,7 +83,7 @@ export default function Rules() {
           <h2 className="text-red-700 text-lg font-bold text-center">
             {t("common:rules-modal.demo")}
           </h2>
-          <img src="/game.gif" alt="my image" />
+          <img src="/game.gif" alt="my image" className="max-w-full h-auto mx-auto" />
         </div>
         <br />
         {objectTxt()}

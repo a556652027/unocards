@@ -40,7 +40,7 @@ export default function Select({
         onClick={() => setIsOpen((open) => !open)}
         className={classnames([
           "flex items-center justify-between w-full text-gray-800 bg-white border-2 border-gray-200 rounded-lg shadow-sm text-sm sm:text-base font-semibold cursor-pointer",
-          "pl-3 pr-2 py-2 my-1 ml-0 mr-2 md:m-2",
+          "pl-2 pr-1 py-1 my-1 ml-0 mr-0 sm:pl-3 sm:pr-2 sm:py-2 sm:mr-2 md:m-2",
           "focus:border-red-500 focus:outline-none focus:shadow-md hover:border-red-300",
           "duration-150 ease-in-out transition",
           "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -52,7 +52,7 @@ export default function Select({
             : t("common:select-empty-option")}
         </span>
         <span
-          className={`flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-600 ml-2 transform transition-transform duration-150 ${
+          className={`flex-shrink-0 flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-100 text-red-600 ml-1 sm:ml-2 transform transition-transform duration-150 ${
             isOpen ? "rotate-180" : ""
           }`}
         >
@@ -69,7 +69,8 @@ export default function Select({
       {isOpen && (
         <ul
           role="listbox"
-          className="absolute z-40 top-full mt-1 min-w-full bg-white border-2 border-gray-200 rounded-lg shadow-2xl overflow-hidden py-1"
+          className="absolute z-40 top-full right-0 mt-1 min-w-full bg-white border-2 border-gray-200 rounded-lg shadow-2xl overflow-hidden py-1"
+          style={{ maxWidth: "calc(100vw - 2rem)" }}
         >
           {options.map((option) => (
             <li key={option.id} role="option" aria-selected={option.id === value}>

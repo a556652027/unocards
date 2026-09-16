@@ -77,7 +77,7 @@ export default class UnoGame extends App {
           )}
           <meta
             name="viewport"
-            content="width=device-width, initial-scale=1.0 , viewport-fit=cover"
+            content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
           />
 
           <Fragment>
@@ -103,10 +103,6 @@ export default class UnoGame extends App {
           <meta
             property="twitter:image"
             content="https://uno-game.now.sh/image.jpg"
-          />
-          <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1,maximum-scale=5"
           />
         </Head>
         <Component {...pageProps} />

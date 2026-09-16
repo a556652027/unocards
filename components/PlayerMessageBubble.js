@@ -29,13 +29,13 @@ export default function PlayerMessageBubble({ message, position = "above" }) {
               right: "calc(50% + 4.5rem)",
               top: "-1rem",
               width: "max-content",
-              maxWidth: "11rem",
+              maxWidth: "min(11rem, 45vw)",
             }
           : {
               left: "50%",
               top: "-1rem",
               width: "max-content",
-              maxWidth: "13rem",
+              maxWidth: "min(13rem, 32vw)",
             }
       }
     >
