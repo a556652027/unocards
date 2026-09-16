@@ -8,6 +8,8 @@
   "pages": {
     "*": ["common"],
     "/": ["index"],
+    "/games": ["games"],
+    "/games/poker": ["games"],
     "/rooms/[roomId]": ["roomId"],
     "/rooms/[roomId]/players/[playerId]": ["playerId"],
     "/rooms/[roomId]/watch": ["watch"]

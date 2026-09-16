@@ -67,6 +67,11 @@ export default function Header() {
                 {t("common:new-game")}
               </a>
             </Link>
+            <Link href="/games">
+              <a className="text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-1 sm:px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out">
+                {t("common:other-games")}
+              </a>
+            </Link>
             <button
               id="rules"
               className="focus:outline-none focus:shadow-outline text-gray-700 hover:text-red-600 font-medium text-center text-sm sm:text-base px-1 sm:px-2 md:px-4 m-0 md:m-2 transition duration-150 ease-in-out"
