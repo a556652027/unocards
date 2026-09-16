@@ -46,15 +46,20 @@ export default function Header() {
     <header className="w-full h-14 bg-white px-4 py-2 shadow-md relative z-10">
       <Container size="large">
         <div className="flex items-center justify-between h-10">
-          <Link href="/">
-            <span className="cursor-pointer duration-150 ease-in-out hover:scale-105 focus:outline-none outline-none transition transform inline-block">
-              <img
-                src="/cards/UNO_Logo.svg"
-                alt="UNO"
-                className="h-8 sm:h-10"
-              />
+          <div className="flex items-center min-w-0">
+            <Link href="/">
+              <span className="cursor-pointer duration-150 ease-in-out hover:scale-105 focus:outline-none outline-none transition transform inline-block flex-shrink-0">
+                <img
+                  src="/cards/UNO_Logo.svg"
+                  alt="UNO"
+                  className="h-8 sm:h-10"
+                />
+              </span>
+            </Link>
+            <span className="hidden sm:inline-block text-xs text-gray-400 ml-2 truncate">
+              {t("common:author-credit")}
             </span>
-          </Link>
+          </div>
 
           <div className="flex items-center justify-end">
             <Link href="/">
