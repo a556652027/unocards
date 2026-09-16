@@ -6,7 +6,7 @@ Uno Card Game online.<br>
  * no need to install anything <br>
  * no need to register<br>
 ## Demo: Uno Card Game website
-### https://uno-game.now.sh<br>
+### https://www.unocards.online<br>
 | ![Uno Game gif](./public/readme/UNO%20Game%20_%20Uno%20online.gif)
 
 ## Technologies Used
